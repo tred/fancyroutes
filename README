@@ -1,0 +1,36 @@
+Fancyroutes
+===========
+
+Fancyroutes is the first project from the TRED team. It has the following goals:
+
+* Clean up route files
+* Forget about rest out of the box (It's an API, build it as one)
+* Provide building routes functionality
+* Provide route linking functionality
+
+Put your fancy routes into your routes file.
+
+Example
+=======
+
+FancyRoutes::RouteSet.new(@map) do
+  (get / 'orders' >> :orders > 'index')
+  (with / :slug >> :my_controller).match do
+    (get / 'order' > :my_action).create
+    (post / 'order' > :my_action).create
+  end
+  (get / {'item_images' => :controller} / :image > :show).create
+end
+
+Copyright (c) 2008 TRED Team, released under the MIT license
+
+Contributors
+============
+
+Myles Byrne
+Carl Woodward
+Tim Lucas
+Chris Lloyd
+Michael Koukoullis
+Lincoln Stolli
+Dave Newman
