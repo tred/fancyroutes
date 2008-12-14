@@ -14,7 +14,7 @@ describe "FancyRoutes" do
   end
 
   example "route on root" do
-    mock(@map).connect('', {
+    mock(@map).connect('/', {
       :controller => 'my_controller',
       :action => 'my_action',
       :conditions => { :method => 'get' },
@@ -24,7 +24,7 @@ describe "FancyRoutes" do
   end  
 
   example "short form route on root" do
-    mock(@map).connect('', {
+    mock(@map).connect('/', {
       :controller => 'my_controller',
       :action => 'my_action',
       :conditions => { :method => 'get' },
@@ -34,7 +34,7 @@ describe "FancyRoutes" do
   end
   
   example "short form route on order" do
-    mock(@map).connect(':slug/order', {
+    mock(@map).connect('/:slug/order', {
       :controller => 'my_controller',
       :action => 'my_action',
       :conditions => {:method => 'get'}
@@ -44,7 +44,7 @@ describe "FancyRoutes" do
   end
   
   example "short form route on order as post" do
-    mock(@map).connect(':slug/order', {
+    mock(@map).connect('/:slug/order', {
       :controller => 'my_controller',
       :action => 'my_action',
       :conditions => {:method => 'post'}
@@ -54,12 +54,12 @@ describe "FancyRoutes" do
   end
   
   example "short form route nested route" do
-    mock(@map).connect(':slug/order', {
+    mock(@map).connect('/:slug/order', {
       :controller => 'my_controller',
       :action => 'my_action',
       :conditions => {:method => 'get'}
     })
-    mock(@map).connect(':slug/order', {
+    mock(@map).connect('/:slug/order', {
       :controller => 'my_controller',
       :action => 'my_action',
       :conditions => {:method => 'post'}
@@ -72,12 +72,12 @@ describe "FancyRoutes" do
   end
   
   example "nested in nested routes" do
-    mock(@map).connect(':slug/order', {
+    mock(@map).connect('/:slug/order', {
       :controller => 'my_controller',
       :action => 'my_action',
       :conditions => {:method => 'get'}
     })
-    mock(@map).connect(':slug/order', {
+    mock(@map).connect('/:slug/order', {
       :controller => 'my_controller',
       :action => 'my_action',
       :conditions => {:method => 'post'}
@@ -92,12 +92,12 @@ describe "FancyRoutes" do
   end
   
   example "testing route set" do
-    mock(@map).connect(':slug/order', {
+    mock(@map).connect('/:slug/order', {
       :controller => 'my_controller',
       :action => 'my_action',
       :conditions => {:method => 'get'}
     })
-    mock(@map).connect(':slug/order', {
+    mock(@map).connect('/:slug/order', {
       :controller => 'my_controller',
       :action => 'my_action',
       :conditions => {:method => 'post'}
@@ -114,7 +114,7 @@ describe "FancyRoutes" do
   end
   
   example "with hashes for controller" do
-    mock(@map).connect('item_images/:image', {
+    mock(@map).connect('/item_images/:image', {
       :controller => 'item_images',
       :action => 'show',
       :conditions => {:method => 'get'}
