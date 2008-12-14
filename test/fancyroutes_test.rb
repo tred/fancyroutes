@@ -17,7 +17,7 @@ describe "FancyRoutes" do
     mock(@map).connect('', {
       :controller => 'my_controller',
       :action => 'my_action',
-      :conditions => { :method => 'get' },
+      :conditions => { :method => :get },
     })
     
     @fancyroutes.request_method(:get).segment('').controller(:my_controller).action(:my_action).create
@@ -27,7 +27,7 @@ describe "FancyRoutes" do
     mock(@map).connect('', {
       :controller => 'my_controller',
       :action => 'my_action',
-      :conditions => { :method => 'get' },
+      :conditions => { :method => :get },
     })
     
     (@fancyroutes.get / '' >> :my_controller > :my_action).create
@@ -37,7 +37,7 @@ describe "FancyRoutes" do
     mock(@map).connect(':slug/order', {
       :controller => 'my_controller',
       :action => 'my_action',
-      :conditions => {:method => 'get'}
+      :conditions => {:method => :get}
     })
     
     (@fancyroutes.get / :slug / 'order' >> :my_controller > :my_action).create
@@ -47,7 +47,7 @@ describe "FancyRoutes" do
     mock(@map).connect(':slug/order', {
       :controller => 'my_controller',
       :action => 'my_action',
-      :conditions => {:method => 'post'}
+      :conditions => {:method => :post}
     })
     
     (@fancyroutes.post / :slug / 'order' >> :my_controller > :my_action).create
@@ -57,12 +57,12 @@ describe "FancyRoutes" do
     mock(@map).connect(':slug/order', {
       :controller => 'my_controller',
       :action => 'my_action',
-      :conditions => {:method => 'get'}
+      :conditions => {:method => :get}
     })
     mock(@map).connect(':slug/order', {
       :controller => 'my_controller',
       :action => 'my_action',
-      :conditions => {:method => 'post'}
+      :conditions => {:method => :post}
     })
     
     (@fancyroutes.with / :slug >> :my_controller).match do
@@ -75,12 +75,12 @@ describe "FancyRoutes" do
     mock(@map).connect(':slug/order', {
       :controller => 'my_controller',
       :action => 'my_action',
-      :conditions => {:method => 'get'}
+      :conditions => {:method => :get}
     })
     mock(@map).connect(':slug/order', {
       :controller => 'my_controller',
       :action => 'my_action',
-      :conditions => {:method => 'post'}
+      :conditions => {:method => :post}
     })
     
     (@fancyroutes.with / :slug).match do
@@ -95,12 +95,12 @@ describe "FancyRoutes" do
     mock(@map).connect(':slug/order', {
       :controller => 'my_controller',
       :action => 'my_action',
-      :conditions => {:method => 'get'}
+      :conditions => {:method => :get}
     })
     mock(@map).connect(':slug/order', {
       :controller => 'my_controller',
       :action => 'my_action',
-      :conditions => {:method => 'post'}
+      :conditions => {:method => :post}
     })
     
     FancyRoutes::RouteSet.new(@map) do
@@ -117,7 +117,7 @@ describe "FancyRoutes" do
     mock(@map).connect('item_images/:image', {
       :controller => 'item_images',
       :action => 'show',
-      :conditions => {:method => 'get'}
+      :conditions => {:method => :get}
     })
     
     (@fancyroutes.get / {'item_images' => :controller} / :image > :show).create

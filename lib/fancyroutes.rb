@@ -17,7 +17,7 @@ module FancyRoutes
     end
 
     def request_method(method)
-      @request_method = method.to_s
+      @request_method = method.to_sym
       self
     end
     
