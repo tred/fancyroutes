@@ -1,19 +1,19 @@
 module FancyRoutes
   class Route
-    
-    class << self
-      def copy(map,segments,controller,action)
-        copy = Route.new(map)
-        copy.segments = segments.dup unless segments.nil?
-        copy.controller(controller.dup) unless controller.nil?
-        copy.action(action.dup) unless action.nil?
-        copy
-      end
-    end
-    
-    def initialize(map)
+    def initialize(map, parent=nil)
       @map = map
-      @segments = []
+      if parent
+        @parent = parent
+        %w(segments controller action request_method).each do |property|
+          property_symbol = "@#{property}".to_sym
+          if parent.instance_variable_get(property_symbol)
+            instance_variable_set(property_symbol, 
+                                  parent.instance_variable_get(property_symbol).dup)
+          end
+        end
+      else
+        @segments = []
+      end
     end
 
     def request_method(method)
@@ -45,14 +45,14 @@ module FancyRoutes
     
     %w(get post put delete).each do |verb|
       define_method verb do
-        c = copy
-        c.request_method(verb.to_sym)
-        c
+        r = Route.new(@map, self)
+        r.request_method(verb.to_sym)
+        r
       end
     end
     
     def with
-      self
+      Route.new(@map, self)
     end
     
     def match(&blk)
@@ -90,10 +90,6 @@ module FancyRoutes
         action key
       end
       key
-    end
-    
-    def copy
-      Route.copy @map, @segments, @controller, @action
     end
     
     def build_route_hash
