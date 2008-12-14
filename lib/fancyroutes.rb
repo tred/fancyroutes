@@ -69,7 +69,7 @@ module FancyRoutes
     protected
     
     def segments
-      '/' + @segments = @segments.collect do |segment|
+      @segments = @segments.collect do |segment|
         case segment
         when String
           segment
