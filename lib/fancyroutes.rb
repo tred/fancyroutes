@@ -60,10 +60,11 @@ module FancyRoutes
     end
         
     def create
-      @map.connect(segments, 
-        :controller => @controller,
-        :action => @action,
-        :conditions => { :method => @request_method })
+      @map.connect(segments, build_route_hash)
+    end
+    
+    def method_missing(name, *args)
+      @map.send(name, segments, build_route_hash)
     end
     
     protected
@@ -93,6 +94,14 @@ module FancyRoutes
     
     def copy
       Route.copy @map, @segments, @controller, @action
+    end
+    
+    def build_route_hash
+      {
+        :controller => @controller,
+        :action => @action,
+        :conditions => {:method => @request_method}
+      }
     end
      
   end

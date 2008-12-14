@@ -123,4 +123,14 @@ describe "FancyRoutes" do
     (@fancyroutes.get / {'item_images' => :controller} / :image > :show).create
   end
   
+  example "with named routes" do
+    mock(@map).image_path('item_images/:image', {
+      :controller => 'item_images',
+      :action => 'show',
+      :conditions => {:method => :get}
+    })
+    
+    (@fancyroutes.get / {'item_images' => :controller} / :image > :show).image_path
+  end
+  
 end
