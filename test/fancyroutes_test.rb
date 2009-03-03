@@ -98,6 +98,16 @@ describe "FancyRoutes" do
     end
   end
   
-  # I hate named routes
+  example "a (stupid) named route" do
+    mock(@map).my_name('item_images/:image', {
+      :controller => 'item_images',
+      :action => 'show',
+      :conditions => { :method => :get },
+    })
+    
+    fancyroutes do 
+      my_name.get / {'item_images' => :controller} / :image > :show
+    end
+  end
   
 end

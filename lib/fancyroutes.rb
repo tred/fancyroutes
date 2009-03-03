@@ -11,6 +11,16 @@ module FancyRoutes
       self
     end
     
+    def get
+      request_method(:get)
+    end
+    
+    # def name(name)
+    #   @name = name.to_s
+    #   self
+    # end
+    attr_writer :name
+    
     def segment(segment)
       segment = case segment
         when Symbol 
@@ -39,7 +49,7 @@ module FancyRoutes
     alias_method :>, :action
     
     def apply(rails_map)
-      rails_map.connect(
+      rails_map.send( (@name ? @name : :connect),
         @segments.join("/"), {
           :controller => @controller,
           :action => @action,
@@ -71,15 +81,20 @@ module FancyRoutes
     end
     
     # builds a new route
-    def route(meth = nil)
+    def route(meth = nil, name = nil)
       route = @template_route ? @template_route.copy : Route.new
       route.request_method(meth) if meth
+      route.name = name if name
       @routes << route
       route
     end
     
     %w(get put post delete).each do |meth|
       define_method(meth) { route(meth) }
+    end
+    
+    def method_missing(meth,*args)
+      route(nil,meth)
     end
     
     def with(route, &blk)
@@ -90,7 +105,9 @@ module FancyRoutes
       nested_set.instance_eval(&blk)
       @routes += nested_set.routes
     end
-  
+    
+    
+    
   end
   
 end
