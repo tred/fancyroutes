@@ -8,7 +8,8 @@ GEM = "fancyroutes"
 GEM_VERSION = "0.9.0"
 AUTHOR = "The TRED Team"
 EMAIL = "tred3000@gmail.com"
-HOMEPAGE = "http://github.com/tred/fancyroutes"
+HOMEPAGE = "http://tred.github.com/fancyroutes"
+SUMMARY = "A cleaner routes interface"
 
 spec = Gem::Specification.new do |s|
   s.name = GEM
@@ -20,10 +21,11 @@ spec = Gem::Specification.new do |s|
   s.author = AUTHOR
   s.email = EMAIL
   s.homepage = HOMEPAGE
+  s.summary = SUMMARY
   
   s.require_path = 'lib'
   s.autorequire = GEM
-  s.files = %w(LICENSE README Rakefile TODO) + Dir.glob("{lib,spec}/**/*")
+  s.files = %w(LICENSE README.md Rakefile) + Dir.glob("{lib,spec}/**/*")
 end
 
 task :default => :spec
