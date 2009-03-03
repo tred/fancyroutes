@@ -15,10 +15,6 @@ module FancyRoutes
       request_method(:get)
     end
     
-    # def name(name)
-    #   @name = name.to_s
-    #   self
-    # end
     attr_writer :name
     
     def segment(segment)
@@ -105,8 +101,6 @@ module FancyRoutes
       nested_set.instance_eval(&blk)
       @routes += nested_set.routes
     end
-    
-    
     
   end
   
