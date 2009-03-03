@@ -10,127 +10,94 @@ describe "FancyRoutes" do
   
   before(:each) do
     @map = Object.new
-    @fancyroutes = FancyRoutes::Route.new(@map)
   end
 
-  example "route on root" do
+  # without helpers
+
+  example "route on root, long form" do
     mock(@map).connect('', {
       :controller => 'my_controller',
       :action => 'my_action',
       :conditions => { :method => :get },
     })
     
-    @fancyroutes.request_method(:get).segment('').controller(:my_controller).action(:my_action).create
-  end  
+    FancyRoutes(@map) do 
+      route(:get).segment('').controller(:my_controller).action(:my_action)
+    end
+  end
+  
+  # an now lets dry up the mocking and route building
+  
+  def fancyroutes(&blk)
+    FancyRoutes(@map,&blk)
+  end
+
+  def expect(meth, path, controller, action)
+    mock(@map).connect(path, {
+      :controller => controller,
+      :action => action,
+      :conditions => { :method => meth },
+    })
+  end
 
   example "short form route on root" do
-    mock(@map).connect('', {
-      :controller => 'my_controller',
-      :action => 'my_action',
-      :conditions => { :method => :get },
-    })
+    expect :get, '', 'my_controller', 'my_action'
     
-    (@fancyroutes.get / '' >> :my_controller > :my_action).create
+    fancyroutes do
+      get / '' >> :my_controller > :my_action
+    end
   end
   
   example "short form route on order" do
-    mock(@map).connect(':slug/order', {
-      :controller => 'my_controller',
-      :action => 'my_action',
-      :conditions => {:method => :get}
-    })
+    expect :get, ':slug/order', 'my_controller', 'my_action'
     
-    (@fancyroutes.get / :slug / 'order' >> :my_controller > :my_action).create
+    fancyroutes do 
+      get / :slug / 'order' >> :my_controller > :my_action
+    end
   end
   
   example "short form route on order as post" do
-    mock(@map).connect(':slug/order', {
-      :controller => 'my_controller',
-      :action => 'my_action',
-      :conditions => {:method => :post}
-    })
+    expect :post, ':slug/order', 'my_controller', 'my_action'
     
-    (@fancyroutes.post / :slug / 'order' >> :my_controller > :my_action).create
+    fancyroutes do
+      post / :slug / 'order' >> :my_controller > :my_action
+    end
   end
   
   example "short form route nested route" do
-    mock(@map).connect(':slug/order', {
-      :controller => 'my_controller',
-      :action => 'my_action',
-      :conditions => {:method => :get}
-    })
-    mock(@map).connect(':slug/order', {
-      :controller => 'my_controller',
-      :action => 'my_action',
-      :conditions => {:method => :post}
-    })
+    expect :get,  ':slug/order', 'my_controller', 'my_action'
+    expect :post, ':slug/order', 'my_controller', 'my_action'
     
-    (@fancyroutes.with / :slug >> :my_controller).match do
-      (get / 'order' > :my_action).create
-      (post / 'order' > :my_action).create
-    end 
+    fancyroutes do 
+      with route / :slug >> :my_controller do
+        get / 'order' > :my_action
+        post / 'order' > :my_action
+      end
+    end
   end
   
   example "nested in nested routes" do
-    mock(@map).connect(':slug/order', {
-      :controller => 'my_controller',
-      :action => 'my_action',
-      :conditions => {:method => :get}
-    })
-    mock(@map).connect(':slug/order', {
-      :controller => 'my_controller',
-      :action => 'my_action',
-      :conditions => {:method => :post}
-    })
+    expect :get,  ':slug/order', 'my_controller', 'my_action'
+    expect :post, ':slug/order', 'my_controller', 'my_action'
     
-    (@fancyroutes.with / :slug).match do
-      (with >> :my_controller).match do
-        (get / 'order' > :my_action).create
-        (post / 'order' > :my_action).create
-      end
-    end 
-  end
-  
-  example "testing route set" do
-    mock(@map).connect(':slug/order', {
-      :controller => 'my_controller',
-      :action => 'my_action',
-      :conditions => {:method => :get}
-    })
-    mock(@map).connect(':slug/order', {
-      :controller => 'my_controller',
-      :action => 'my_action',
-      :conditions => {:method => :post}
-    })
-    
-    FancyRoutes::RouteSet.new(@map) do
-      (with / :slug).match do
-        (with >> :my_controller).match do
-          (get / 'order' > :my_action).create
-          (post / 'order' > :my_action).create
+    fancyroutes do
+      with route / :slug do
+        with route >> :my_controller do
+          get / 'order' > :my_action
+          post / 'order' > :my_action
         end
       end
-    end 
+    end
+  end
+    
+  example "with named segment" do
+    expect :get, 'item_images/:image', 'item_images', 'show'
+    
+    fancyroutes do 
+      get / {'item_images' => :controller} / :image > :show
+    end
   end
   
-  example "with hashes for controller" do
-    mock(@map).connect('item_images/:image', {
-      :controller => 'item_images',
-      :action => 'show',
-      :conditions => {:method => :get}
-    })
-    
-    (@fancyroutes.get / {'item_images' => :controller} / :image > :show).create
-  end
-  
-  example "with named routes" do
-    mock(@map).image_path('item_images/:image', {
-      :controller => 'item_images',
-      :action => 'show',
-      :conditions => {:method => :get}
-    })
-    
-    (@fancyroutes.get / {'item_images' => :controller} / :image > :show).image_path
-  end
+  # I hate named routes
   
 end

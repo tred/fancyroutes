@@ -13,13 +13,17 @@ Put your fancy routes into your routes file.
 Example
 =======
 
-FancyRoutes::RouteSet.new(@map) do
-  (get / 'orders' >> :orders > 'index')
-  (with / :slug >> :my_controller).match do
-    (get / 'order' > :my_action).create
-    (post / 'order' > :my_action).create
+FancyRoutes(@map) do
+
+  get / 'orders' >> :orders > 'index'
+  
+  with route / :slug >> :my_controller do
+    get / 'order' > :my_action
+    post / 'order' > :my_action
   end
-  (get / {'item_images' => :controller} / :image > :show).create
+  
+  get / {'item_images' => :controller} / :image > :show
+  
 end
 
 Copyright (c) 2008 TRED Team, released under the MIT license
