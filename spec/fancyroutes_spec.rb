@@ -1,10 +1,4 @@
-require "rubygems"
-require "spec"
-require File.expand_path(File.dirname(__FILE__) + "/../lib/fancyroutes")
-
-Spec::Runner.configure do |config|
-  config.mock_with :rr
-end
+require File.dirname(__FILE__) + '/spec_helper'
 
 describe "FancyRoutes" do
   

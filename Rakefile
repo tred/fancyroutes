@@ -1,22 +1,52 @@
-require 'rake'
-require 'rake/testtask'
-require 'rake/rdoctask'
+require 'rubygems'
+require 'rake/gempackagetask'
+require 'rubygems/specification'
+require 'date'
+require 'spec/rake/spectask'
 
-desc 'Default: run unit tests.'
-task :default => :test
+GEM = "fancyroutes"
+GEM_VERSION = "0.9.0"
+AUTHOR = "The TRED Team"
+EMAIL = "tred3000@gmail.com"
+HOMEPAGE = "http://github.com/tred/fancyroutes"
 
-desc 'Test the fancyroutes plugin.'
-Rake::TestTask.new(:test) do |t|
-  t.libs << 'lib'
-  t.pattern = 'test/**/*_test.rb'
-  t.verbose = true
+spec = Gem::Specification.new do |s|
+  s.name = GEM
+  s.version = GEM_VERSION
+  s.platform = Gem::Platform::RUBY
+  s.has_rdoc = true
+  s.extra_rdoc_files = ['README.md', 'LICENSE']
+  s.description = s.summary
+  s.author = AUTHOR
+  s.email = EMAIL
+  s.homepage = HOMEPAGE
+  
+  s.require_path = 'lib'
+  s.autorequire = GEM
+  s.files = %w(LICENSE README Rakefile TODO) + Dir.glob("{lib,spec}/**/*")
 end
 
-desc 'Generate documentation for the fancyroutes plugin.'
-Rake::RDocTask.new(:rdoc) do |rdoc|
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title    = 'Fancyroutes'
-  rdoc.options << '--line-numbers' << '--inline-source'
-  rdoc.rdoc_files.include('README')
-  rdoc.rdoc_files.include('lib/**/*.rb')
+task :default => :spec
+
+desc "Run specs"
+Spec::Rake::SpecTask.new do |t|
+  t.spec_files = FileList['spec/**/*_spec.rb']
+  t.spec_opts = %w(-fs --color)
+end
+
+
+Rake::GemPackageTask.new(spec) do |pkg|
+  pkg.gem_spec = spec
+end
+
+desc "install the gem locally"
+task :install => [:package] do
+  sh %{sudo gem install pkg/#{GEM}-#{GEM_VERSION}}
+end
+
+desc "create a gemspec file"
+task :make_spec do
+  File.open("#{GEM}.gemspec", "w") do |file|
+    file.puts spec.to_ruby
+  end
 end

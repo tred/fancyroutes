@@ -31,10 +31,10 @@ Copyright (c) 2008 TRED Team, released under the MIT license
 Contributors
 ============
 
-Myles Byrne
-Carl Woodward
-Tim Lucas
-Chris Lloyd
-Michael Koukoullis
-Lincoln Stolli
-Dave Newman
+* Myles Byrne
+* Carl Woodward
+* Tim Lucas
+* Chris Lloyd
+* Michael Koukoullis
+* Lincoln Stolli
+* Dave Newman
