@@ -60,6 +60,16 @@ module FancyRoutes
     end
     
   end
+  
+  class RootRoute < Route
+    
+    def apply(rails_map)
+      rails_map.root :controller => @controller,
+                     :action => @action,
+                     :conditions => { :method => @request_method }
+    end
+    
+  end
 
   # may be clearer to use 3 classes here: RouteSet, MasterSet & NestedSet
   
@@ -78,7 +88,7 @@ module FancyRoutes
     
     # builds a new route
     def route(meth = nil, name = nil)
-      route = @template_route ? @template_route.copy : Route.new
+      route = @template_route ? @template_route.copy : (name == :root ? RootRoute.new : Route.new)
       route.request_method(meth) if meth
       route.name = name if name
       @routes << route
@@ -87,6 +97,10 @@ module FancyRoutes
     
     %w(get put post delete).each do |meth|
       define_method(meth) { route(meth) }
+    end
+    
+    def root
+      route(:get, :root)
     end
     
     def method_missing(meth,*args)

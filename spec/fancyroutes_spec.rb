@@ -96,11 +96,23 @@ describe "FancyRoutes" do
     mock(@map).my_name('item_images/:image', {
       :controller => 'item_images',
       :action => 'show',
-      :conditions => { :method => :get },
+      :conditions => { :method => :get }
     })
     
     fancyroutes do 
       my_name.get / {'item_images' => :controller} / :image > :show
+    end
+  end
+  
+  example "root route" do
+    mock(@map).root(
+      :controller => 'homepage',
+      :action => 'index',
+      :conditions => { :method => :get }
+    )
+    
+    fancyroutes do
+      root >> :homepage > :index
     end
   end
   
