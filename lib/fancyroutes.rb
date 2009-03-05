@@ -11,8 +11,8 @@ module FancyRoutes
       self
     end
     
-    def get
-      request_method(:get)
+    %w(get put post delete).each do |meth|
+      define_method(meth) { request_method(meth) }
     end
     
     attr_writer :name
