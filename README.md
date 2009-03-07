@@ -101,11 +101,11 @@ Install the gem:
 
     sudo gem install tred-fancyroutes
 
-add the dependency in your `environment.rb`:
+add the dependency in your environment.rb:
 
     config.gem 'tred-fancyroutes'
 
-and then use the `FancyRoutes` method in your `routes.rb`:
+and then use the FancyRoutes method in your routes.rb:
 
     ActionController::Routing::Routes.draw do |map|
     FancyRoutes(map) do
