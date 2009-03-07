@@ -1,84 +1,117 @@
 Fancyroutes
 ===========
 
-Fancyroutes is the first project from the TRED team. It has the following goals:
+Fancyroutes is a layer on top of the Rails routing system which provides an
+elegant API for mapping requests to your application's controllers and
+actions.
 
-* Clean up route files
-* Forget about rest out of the box (It's an API, build it as one)
-* Provide building routes functionality
-* Provide route linking functionality
+It provides all the Rails routing basics whilst removing the cruft, bringing the HTTP method to the forefront and support for DRYing up your routes via nesting.
 
+The following were routes from one of Myles' applications:
 
-Usage
------
+    map.connect '/orders', :controller => 'orders', :action => 'index, :conditions => { :method => :get }
 
-To teach you how to use Fancyroutes, we're going to show you some conversions from Rails' current routes into Fancyroutes. Lets start with the default routes:
+    map.connect '/:slug/order', :controller => 'orders', :action => :show, :conditions => { :method => :get }
+    map.connect '/:slug/order', :controller => 'orders', :action => :create, :conditions => { :method => :post }
 
-<pre><code>map.connect ':controller/:action/:id'
-map.connect ':controller/:action/:id.:format'</code></pre>
+    map.connect 'item_images/:image', :controller => 'item_images', :action => 'show', :conditions => { :method => :get }
 
-with Fancyroutes that becomes much prettier:
+Converted to fancyroutes these now look like:
 
-<pre><code>get / :controller / :action / :id
-get / :controller / :action / ':id.:format'</code></pre>
+    get / 'orders' >> :orders > :index
 
-Fancyroutes was designed specifically for the route files the group were working on. Here is an example from Myles' app:
+    with route / :slug / 'order' >> :orders do
+      get > :show
+      put > :update
+    end
+    
+    get {'item_images' => :controller} / :image > :show
 
-<pre><code>map.connect '/orders', :controller => 'orders', :action => 'index, :conditions => { :method => :get }
+So fancy!
 
-map.connect '/:slug/order', :controller => 'orders', :action => :show, :conditions => { :method => :get }
-map.connect '/:slug/order', :controller => 'orders', :action => :create, :conditions => { :method => :post }
-
-map.connect 'item_images/:image', :controller => 'item_images', :action => 'show', :conditions => { :method => :get }</code></pre>
-
-Here is how we could re-write that with Fancyroutes:
-
-<pre><code>get / 'orders' >> :orders > 'index'
-
-with route / :slug >> :orders do
-  get / 'order' > :show
-  put / 'order' > :update
-end
-
-# Inline controller syntax
-get / {'item_images' => :controller} / :image > :show</code></pre>
-
-The `>>` syntax indicates the controller and the `>` syntax means the action. Another example from Chris' app:
-
-<pre><code>map.connect '/playground/:action', :controller => 'playground'
-map.connect '/admin/playground/:action', :controller => 'admin/playground'
-
-map.root :controller => 'homepage', :action => 'index'
-
-map.page '/*tree', :controller => 'pages', :action => 'show'</code></pre>
-
-and with Fancyroutes:
-
-<pre><code>get / {'playground' => :controller } / :action
-get / {'admin/playground' => :controller } / :action
-
-root >> :homepage > :index
-
-page.get / '*tree' >> :pages > :show</code></pre>
-
-
-Get It
+Syntax
 ------
 
-It is distributed as a rubygem:
+The `>>` operator indicates the controller and the `>` operator indicates the action.
 
-`sudo gem install tred-fancyroutes`
+The string segments, such as `'order'`, are just static bits of the URL path.
 
-You can then `config.gem` from your `environment.rb`. You can also download and view the source from [Github](http://github.com/tred/fancyroutes).
+The symbol segments, such as `:image`, define parameters.
 
-To use it in your routes file you need to do this:
+Please leave your parentheses in the naughty cupboard where they came from--fancyroutes' syntax was designed with Ruby's operator precedence in mind.
 
-<pre><code>ActionController::Routing::Routes.draw do |map|
-FancyRoutes(map) do
-  ...
-end
-end</code></pre>
+The root route
+--------------
 
+A standard root rout looks something like this:
+
+    map.root :controller => 'homepage', :action => 'index'
+    
+The fancier version is:
+
+    root >> :homepage > :index
+
+Controller names in the path
+----------------------------
+
+Quite often the controller name will already be in the path itself.
+
+    map.connect '/playground/:action', :controller => 'playground'
+
+Don't repeat yourself! Provide a hash instead:
+
+    get / {'playground' => :controller} / :action
+
+Named routes
+------------
+
+Simply suffix the get/post/put/delete with the name:
+
+    page.get / '*tree' >> :pages > :show
+
+Now you can generate the route:
+
+    page_path(["help", "where-is-the-any-key"])
+
+Nesting routes
+--------------
+
+Use `with route` to DRY up similar routes. For example:
+
+    get / :slug / 'order' >> :orders > :show
+    put / :slug / 'order' >> :orders > :update
+
+can be rewritten as:
+
+    with route / :slug / 'order' >> :orders do
+      get > :show
+      put > :update
+    end
+
+Installing
+----------
+
+Install the gem:
+
+    sudo gem install tred-fancyroutes
+
+add the dependency in your `environment.rb`:
+
+    config.gem 'tred-fancyroutes'
+
+and then use the `FancyRoutes` method in your `routes.rb`:
+
+    ActionController::Routing::Routes.draw do |map|
+    FancyRoutes(map) do
+      # the
+      # fanciest
+      # routes
+      # you
+      # ever
+      # did
+      # see
+    end
+    end
 
 Contributors
 ------------
@@ -91,11 +124,10 @@ Contributors
 * Lincoln Stolli
 * Dave Newman
 
+License (MIT)
+-------------
 
-License
--------
-
-Copyright (c) 2008 The TRED Team
+Copyright (c) 2008-09 The TRED Team
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

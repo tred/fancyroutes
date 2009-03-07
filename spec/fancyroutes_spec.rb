@@ -50,22 +50,34 @@ describe "FancyRoutes" do
     end
   end
   
-  example "short form route on order as post" do
-    expect :post, ':slug/order', 'my_controller', 'my_action'
+  example "short form route on order as put" do
+    expect :put, ':slug/order', 'my_controller', 'my_action'
     
     fancyroutes do
-      post / :slug / 'order' >> :my_controller > :my_action
+      put / :slug / 'order' >> :my_controller > :my_action
     end
   end
   
   example "short form route nested route" do
-    expect :get,  ':slug/order', 'my_controller', 'my_action'
-    expect :post, ':slug/order', 'my_controller', 'my_action'
+    expect :get,  ':slug/order', 'orders', 'show'
+    expect :put, ':slug/order', 'orders', 'update'
     
     fancyroutes do 
-      with route / :slug >> :my_controller do
-        get / 'order' > :my_action
-        post / 'order' > :my_action
+      with route / :slug >> :orders do
+        get / 'order' > :show
+        put / 'order' > :update
+      end
+    end
+  end
+  
+  example "short form route nested route on method only" do
+    expect :get,  ':slug/order', 'my_controller', 'show'
+    expect :put, ':slug/order', 'my_controller', 'update'
+    
+    fancyroutes do
+      with route / :slug / 'order' >> :my_controller do
+        get > :show
+        put > :update
       end
     end
   end
@@ -83,7 +95,7 @@ describe "FancyRoutes" do
       end
     end
   end
-    
+  
   example "with named segment" do
     expect :get, 'item_images/:image', 'item_images', 'show'
     
@@ -92,7 +104,7 @@ describe "FancyRoutes" do
     end
   end
   
-  example "a (stupid) named route" do
+  example "a named route" do
     mock(@map).my_name('item_images/:image', {
       :controller => 'item_images',
       :action => 'show',
