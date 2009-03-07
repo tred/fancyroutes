@@ -1,13 +1,12 @@
-Fancyroutes
+FancyRoutes
 ===========
 
-Fancyroutes is a layer on top of the Rails routing system which provides an
-elegant API for mapping requests to your application's controllers and
-actions.
+Removing the cruft, bringing the HTTP method to the forefront and sporting a
+neat DRYing block syntax--FancyRoutes is a layer on top of the Rails routing
+system which provides an elegant API for mapping requests to your
+application's controllers and actions.
 
-It provides all the Rails routing basics whilst removing the cruft, bringing the HTTP method to the forefront and support for DRYing up your routes via nesting.
-
-The following were routes from one of Myles' applications:
+Take for example the following routes from one of Myles' applications:
 
     map.connect '/orders', :controller => 'orders', :action => 'index, :conditions => { :method => :get }
 
@@ -29,27 +28,16 @@ Converted to fancyroutes these now look like:
 
 So fancy!
 
-Syntax
-------
+Where'd all the parentheses go?
+-------------------------------
 
-The `>>` operator indicates the controller and the `>` operator indicates the action.
+We use three of Ruby's operators to define paths:
 
-The string segments, such as `'order'`, are just static bits of the URL path.
+* `/` separates the segments
+* `>>` indicates the controller
+* `>` indicates the action
 
-The symbol segments, such as `:image`, define parameters.
-
-Please leave your parentheses in the naughty cupboard where they came from--fancyroutes' syntax was designed with Ruby's operator precedence in mind.
-
-The root route
---------------
-
-A standard root rout looks something like this:
-
-    map.root :controller => 'homepage', :action => 'index'
-    
-The fancier version is:
-
-    root >> :homepage > :index
+Segments of the path can be strings or symbols. Symbols, such as `:image`, define parameters and strings, such as `'order'`, define static segments.
 
 Controller names in the path
 ----------------------------
@@ -69,7 +57,7 @@ Simply suffix the get/post/put/delete with the name:
 
     page.get / '*tree' >> :pages > :show
 
-Now you can generate the route:
+Now you can generate a path with the route:
 
     page_path(["help", "where-is-the-any-key"])
 
@@ -83,10 +71,28 @@ Use `with route` to DRY up similar routes. For example:
 
 can be rewritten as:
 
+    with route / :slug >> :orders do
+      get / 'order' > :show
+      put / 'order' > :update
+    end
+
+or even better:
+
     with route / :slug / 'order' >> :orders do
       get > :show
       put > :update
     end
+
+The root route
+--------------
+
+A standard root route looks something like this:
+
+    map.root :controller => 'homepage', :action => 'index'
+
+The fancier version is:
+
+    root >> :homepage > :index
 
 Installing
 ----------
