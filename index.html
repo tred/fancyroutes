@@ -1,89 +1,106 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-
-	<title>tred/fancyroutes @ GitHub</title>
-	
+	<title>fancyroutes</title>
 	<style type="text/css">
 		body {
-  		margin-top: 1.0em;
-  		background-color: #a2fe8a;
-		  font-family: "helvetica"; 
-  		color: #000000;
-    }
-    #container {
+		  font-size: 67.5%;
       margin: 0 auto;
+      padding: 2em 0;
       width: 700px;
+  		background-color: #fff;
+  		color: #000;
+  		font-family: Verdana, sans-serif;
     }
-		h1 { font-size: 3.8em; color: #5d0175; margin-bottom: 3px; }
-		h1 .small { font-size: 0.4em; }
+    h1, h2, pre, p, div { margin: 0; padding: 0; font-size: 1em;} /* Reset */
+    h1, h2 { font-family: "Gotham Black", Gotham, Helvetica, sans-serif; }
+
+    a, a:visited { color: #000; }
+    a:hover, a:active { color: #666;}
+
+		h1 { font-size: 3.6em; margin: 10px 0; }
+		h1 .by-line { font-size: 0.5em; }
 		h1 a { text-decoration: none }
-		h2 { font-size: 1.5em; color: #5d0175; }
-    h3 { text-align: center; color: #5d0175; }
-    a { color: #5d0175; }
-    .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
-    .download { float: right; }
-		pre { background: #000; color: #fff; padding: 15px;}
-    hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
-    .footer { text-align:center; padding-top:30px; font-style: italic; }
+
+		h2 { font-size: 2.4em; margin: 20px 0 10px 0; }
+    p { font-size: 1.2em; margin: 10px 0; }
+
+		pre { font-family: monaco, courier; background: #444; color: #eee; padding: 11px 15px 18px 15px; line-height:1.1; font-size: 1.6em; margin: 10px 0 15px 0; overflow: hidden;}
+
+    div.fork-me { position: absolute; top: 0; right: 0; }
+    div.fork-me img { border: 0; }
 	</style>
-	
 </head>
-
 <body>
-  <a href="http://github.com/tred/fancyroutes"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
-  
-  <div id="container">
+  <h1>
+    <a href="http://github.com/tred/fancyroutes">fancyroutes</a> 
+    <span class="by-line">by <a href="http://tred.github.com/">TRED</a></small>
+  </h1>
 
-    <div class="download">
-      <a href="http://github.com/tred/fancyroutes/zipball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a>
-      <a href="http://github.com/tred/fancyroutes/tarball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/tar.png"></a>
-    </div>
-      
-    <h1><a href="http://github.com/tred/fancyroutes">fancyroutes</a> 
-      <span class="small">by <a href="http://github.com/tred">tred</a></small></h1>
-
-    <div class="description">
-      Project Description
-    </div>
-
-    <p>Main Text</p><h2>Dependencies</h2>
-<p>Dependencies</p>
-<h2>Install</h2>
-<p>Installation Instructions</p>
-<h2>License</h2>
-<p>MIT License</p>
-<h2>Authors</h2>
-<p>Authors
-<br/>
-<br/>      </p>
-<h2>Contact</h2>
-<p>The TRED Team (tred3000@gmail.com)
-<br/>      </p>
-
-
-    <h2>Download</h2>
+  <div class="description">
     <p>
-      You can download this project in either
-      <a href="http://github.com/tred/fancyroutes/zipball/master">zip</a> or
-      <a href="http://github.com/tred/fancyroutes/tarball/master">tar</a> formats.
+      Removing the cruft, bringing the HTTP method to the forefront and
+      sporting a neat DRYing block syntax&mdash;FancyRoutes is a layer on
+      top of the Rails routing system which provides an elegant API for
+      mapping requests to your application's controllers and actions.
     </p>
-    <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
-      by running:
-      <pre>$ git clone git://github.com/tred/fancyroutes</pre>
-    </p>
-      
-    <div class="footer">
-      get the source code on GitHub : <a href="http://github.com/tred/fancyroutes">tred/fancyroutes</a>
-    </div>
-    
   </div>
-
   
+  <h2>Example</h2>
+  
+  <p>Here's an extract from one of <a href="http://github.com/quackingduck">Myles</a>&rsquo; applications:</p>
+
+  <pre><code>map.connect '/orders', :controller =&gt; 'orders', :action =&gt; 'index, :conditions =&gt; { :method =&gt; :get }
+
+map.connect '/:slug/order', :controller =&gt; 'orders', :action =&gt; :show, :conditions =&gt; { :method =&gt; :get }
+map.connect '/:slug/order', :controller =&gt; 'orders', :action =&gt; :create, :conditions =&gt; { :method =&gt; :post }
+
+map.connect 'item_images/:image', :controller =&gt; 'item_images', :action =&gt; 'show', :conditions =&gt; { :method =&gt; :get }</code></pre>
+
+  <p>The equivalent using fancyroutes:</p>
+
+  <pre><code>get / 'orders' &gt;&gt; :orders &gt; :index
+
+with route / :slug / 'order' &gt;&gt; :orders do
+  get &gt; :show
+  put &gt; :update
+end
+
+get {'item_images' =&gt; :controller} / :image &gt; :show</code></pre>
+
+  <p>So fancy! You can see further examples and full documentation in <a href="http://github.com/tred/fancyroutes/tree/master#readme">the README</a>.</p>
+
+  <h2>Installation</h2>
+
+  <p>Install the gem:</p>
+
+  <pre><code>sudo gem install tred-fancyroutes</code></pre>
+
+  <p>add the dependency in your environment.rb:</p>
+
+  <pre><code>config.gem 'tred-fancyroutes'</code></pre>
+
+  <p>and then use the FancyRoutes method in your routes.rb:</p>
+
+  <pre><code>ActionController::Routing::Routes.draw do |map|
+FancyRoutes(map) do
+  # the
+  # fanciest
+  # routes
+  # you
+  # ever
+  # did
+  # see
+end
+end</code></pre>
+
+  <h2>Source</h2>
+  <p>The main source repository can be found at <a href="http://github.com/tred/fancyroutes/">github.com/tred/fancyroutes</a></p>
+  <p>The URL for the main git repository is:</p>
+  <pre><code>git clone git://github.com/tred/fancyroutes.git</code></pre>
+
+  <div class='fork-me'><a href="http://github.com/tred/fancyroutes"><img src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a></div>
 </body>
 </html>
