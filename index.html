@@ -14,7 +14,7 @@
   		color: #000;
   		font-family: Verdana, sans-serif;
     }
-    h1, h2, pre, p, div { margin: 0; padding: 0; font-size: 1em;} /* Reset */
+    h1, h2, pre, p, div, code { margin: 0; padding: 0; font-size: 1em;} /* Reset */
     h1, h2 { font-family: "Gotham Black", Gotham, Helvetica, sans-serif; }
 
     a, a:visited { color: #000; }
@@ -27,11 +27,24 @@
 		h2 { font-size: 2.4em; margin: 20px 0 10px 0; }
     p { font-size: 1.2em; margin: 10px 0; }
 
-		pre { font-family: monaco, courier; background: #444; color: #eee; padding: 11px 15px 18px 15px; line-height:1.1; font-size: 1.6em; margin: 10px 0 15px 0; overflow: hidden;}
+		pre { font-family: monaco, courier; background: #444; color: #eee; padding: 11px 15px; line-height:1.1; font-size: 1.6em; margin: 10px 0 15px 0; overflow: hidden;}
 
     div.fork-me { position: absolute; top: 0; right: 0; }
     div.fork-me img { border: 0; }
 	</style>
+	<style type="text/css" media="only screen and (max-device-width: 480px)">
+    body { width:90%; padding:0;}
+    h1 { font-size: 2.8em; margin-top:15px; }
+    h2 { font-size: 1.8em; }
+    p { width: 100%; }
+    div.fork-me { display: none; }
+    pre { font-size: 1.2em; line-height: 1.3; }
+    pre.rails-example, pre.fancy-example { font-size: 0.75em; line-height: 1.5; }
+    pre.rails-example { width: 295%; }
+    pre.fancy-example { width: 130%; }
+    a, a:visited, h1 a, h1 a:visited { text-decoration: underline; }
+  </style>
+  <meta name="viewport" content="width=320; initial-scale=1.0; maximum-scale=1.0" />
 </head>
 <body>
   <h1>
@@ -52,7 +65,7 @@
   
   <p>Here's an extract from one of <a href="http://github.com/quackingduck">Myles</a>&rsquo; applications:</p>
 
-  <pre><code>map.connect '/orders', :controller =&gt; 'orders', :action =&gt; 'index, :conditions =&gt; { :method =&gt; :get }
+  <pre class="rails-example"><code>map.connect '/orders', :controller =&gt; 'orders', :action =&gt; 'index, :conditions =&gt; { :method =&gt; :get }
 
 map.connect '/:slug/order', :controller =&gt; 'orders', :action =&gt; :show, :conditions =&gt; { :method =&gt; :get }
 map.connect '/:slug/order', :controller =&gt; 'orders', :action =&gt; :create, :conditions =&gt; { :method =&gt; :post }
@@ -61,7 +74,7 @@ map.connect 'item_images/:image', :controller =&gt; 'item_images', :action =&gt;
 
   <p>The equivalent using fancyroutes:</p>
 
-  <pre><code>get / 'orders' &gt;&gt; :orders &gt; :index
+  <pre class="fancy-example"><code>get / 'orders' &gt;&gt; :orders &gt; :index
 
 with route / :slug / 'order' &gt;&gt; :orders do
   get &gt; :show
