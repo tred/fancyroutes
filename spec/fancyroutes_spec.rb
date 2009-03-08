@@ -59,72 +59,72 @@ describe "FancyRoutes" do
   end
   
   example "short form route nested route" do
-    expect :get,  ':slug/order', 'orders', 'show'
-    expect :put, ':slug/order', 'orders', 'update'
+    expect :get,  ':slug/order', 'my_controller', 'get_action'
+    expect :post, ':slug/order', 'my_controller', 'post_action'
     
     fancyroutes do 
-      with route / :slug >> :orders do
-        get / 'order' > :show
-        put / 'order' > :update
+      with route / :slug >> :my_controller do
+        get / 'order' > :get_action
+        post / 'order' > :post_action
       end
     end
   end
   
   example "short form route nested route on method only" do
-    expect :get,  ':slug/order', 'my_controller', 'show'
-    expect :put, ':slug/order', 'my_controller', 'update'
+    expect :get,  ':slug/order', 'my_controller', 'get_action'
+    expect :post, ':slug/order', 'my_controller', 'post_action'
     
     fancyroutes do
       with route / :slug / 'order' >> :my_controller do
-        get > :show
-        put > :update
+        get > :get_action
+        post > :post_action
       end
     end
   end
   
   example "nested in nested routes" do
-    expect :get,  ':slug/order', 'my_controller', 'my_action'
-    expect :post, ':slug/order', 'my_controller', 'my_action'
+    expect :get,  ':slug/order', 'my_controller', 'get_action'
+    expect :post, ':slug/order', 'my_controller', 'post_action'
     
     fancyroutes do
       with route / :slug do
         with route >> :my_controller do
-          get / 'order' > :my_action
-          post / 'order' > :my_action
+          get / 'order' > :get_action
+          post / 'order' > :post_action
         end
       end
     end
   end
   
   example "with named segment" do
-    expect :get, 'item_images/:image', 'item_images', 'show'
+    expect :get, 'my_controller/:image', 'my_controller', 'my_action'
     
     fancyroutes do 
-      get / {'item_images' => :controller} / :image > :show
+      get / {'my_controller' => :controller} / :image > :my_action
     end
   end
   
   example "a named route" do
-    mock(@map).my_name('item_images/:image', {
-      :controller => 'item_images',
-      :action => 'show',
+    mock(@map).my_name('my_controller/:image', {
+      :controller => 'my_controller',
+      :action => 'my_action',
       :conditions => { :method => :get }
     })
     
     fancyroutes do 
-      my_name.get / {'item_images' => :controller} / :image > :show
+      my_name.get / {'my_controller' => :controller} / :image > :my_action
     end
   end
   
   example "root route" do
     mock(@map).root(
-      :controller => 'homepage',
-      :action => 'index',
+      :controller => 'my_controller',
+      :action => 'my_action',
       :conditions => { :method => :get }
     )
     
     fancyroutes do
-      root >> :homepage > :index
+      root >> :my_controller > :my_action
     end
   end
   
