@@ -5,11 +5,11 @@ require 'date'
 require 'spec/rake/spectask'
 
 GEM = "fancyroutes"
-GEM_VERSION = "0.9.0"
+GEM_VERSION = "0.9.1"
 AUTHOR = "The TRED Team"
 EMAIL = "tred3000@gmail.com"
 HOMEPAGE = "http://tred.github.com/fancyroutes"
-SUMMARY = "A cleaner routes interface"
+SUMMARY = "Removing the cruft, bringing the HTTP method to the forefront and sporting a neat DRYing block syntax--FancyRoutes is a layer on top of the Rails routing system which provides an elegant API for mapping requests to your application's controllers and actions."
 
 spec = Gem::Specification.new do |s|
   s.name = GEM
