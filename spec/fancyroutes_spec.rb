@@ -96,11 +96,19 @@ describe "FancyRoutes" do
     end
   end
   
-  example "with named segment" do
-    expect :get, 'my_controller/:image', 'my_controller', 'my_action'
+  example "with named segments" do
+    expect :get, 'my_controller/my_action', 'my_controller', 'my_action'
     
     fancyroutes do 
-      get / {'my_controller' => :controller} / :image > :my_action
+      get / {'my_controller' => :controller} / {'my_action' => :action}
+    end
+  end
+  
+  example "with named segments using dashes" do
+    expect :get, 'my-controller/my-action', 'my_controller', 'my_action'
+    
+    fancyroutes do 
+      get / {'my-controller' => :controller} / {'my-action' => :action}
     end
   end
   

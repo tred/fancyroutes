@@ -47,8 +47,8 @@ module FancyRoutes
     def apply(rails_map)
       rails_map.send( (@name ? @name : :connect),
         @segments.join("/"), {
-          :controller => @controller,
-          :action => @action,
+          :controller => @controller.underscore,
+          :action => @action.underscore,
           :conditions => { :method => @request_method }
         }
       )
@@ -58,7 +58,7 @@ module FancyRoutes
     def copy
       Marshal::load(Marshal.dump(self))  
     end
-    
+
   end
   
   class RootRoute < Route
