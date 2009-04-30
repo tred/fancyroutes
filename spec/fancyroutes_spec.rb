@@ -112,6 +112,22 @@ describe "FancyRoutes" do
     end
   end
   
+  example "with controller assumed from first segment" do
+    expect :get, 'my_controller/my_action', 'my_controller', 'my_action'
+    
+    fancyroutes do
+      get / "my_controller" / "my_action" > :my_action
+    end
+  end
+
+  example "with controller assumed from first segment using dashes" do
+    expect :get, 'my-controller/my_action', 'my_controller', 'my_action'
+    
+    fancyroutes do
+      get / "my-controller" / { "my_action" => :action}
+    end
+  end
+  
   example "a named route" do
     mock(@map).my_name('my_controller/:image', {
       :controller => 'my_controller',

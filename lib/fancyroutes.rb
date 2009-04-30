@@ -47,7 +47,7 @@ module FancyRoutes
     def apply(rails_map)
       rails_map.send( (@name ? @name : :connect),
         @segments.join("/"), {
-          :controller => @controller.underscore,
+          :controller => (@controller && @controller.underscore || @segments.first.underscore),
           :action => @action.underscore,
           :conditions => { :method => @request_method }
         }
