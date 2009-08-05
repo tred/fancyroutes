@@ -5,7 +5,7 @@ require 'date'
 require 'spec/rake/spectask'
 
 GEM = "fancyroutes"
-GEM_VERSION = "0.9.1"
+GEM_VERSION = "0.9.3"
 AUTHOR = "The TRED Team"
 EMAIL = "tred3000@gmail.com"
 HOMEPAGE = "http://tred.github.com/fancyroutes"
@@ -22,7 +22,7 @@ spec = Gem::Specification.new do |s|
   s.email = EMAIL
   s.homepage = HOMEPAGE
   s.summary = SUMMARY
-  
+
   s.require_path = 'lib'
   s.autorequire = GEM
   s.files = %w(LICENSE README.md Rakefile) + Dir.glob("{lib,spec}/**/*")
